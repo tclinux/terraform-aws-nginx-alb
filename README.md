@@ -59,6 +59,7 @@ terraform apply
 ## 🌍 デモ
   ![image](./images/screenshot_net-4.net.avif)
 * https://net-4.net
+* (普段はAWSの課金を防ぐために起動していません)
 
 ---
 
