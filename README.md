@@ -3,7 +3,7 @@
 
 ## 📌 概要
 
-Terraformを用いてAWS上にWebインフラを構築しました。
+Terraformを用いてAWS上にWebインフラを構築しました。<br>
 ALB（Application Load Balancer）を使用し、HTTPS通信を実現しています。
 
 ---
@@ -33,12 +33,12 @@ https://net-4.net
 
 ## 🌐 アーキテクチャ
 
-Client
-↓
-Route53（DNS）
-↓
-ALB（HTTPS 443）
-↓
+Client<br>
+↓<br>
+Route53（DNS）<br>
+↓<br>
+ALB（HTTPS 443）<br>
+↓<br>
 EC2（nginx）
 
 ---
