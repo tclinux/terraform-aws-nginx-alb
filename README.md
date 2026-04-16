@@ -1,17 +1,24 @@
 
-# Terraform AWS Nginx + ALB (HTTPS)
+# Terraform AWS Nginx + ALB + HTTPS
 
 ## 📌 概要
+Terraformを用いてAWS上に以下の構成を構築するプロジェクトです。
 
-Terraformを用いてAWS上にWebインフラを構築しました。<br>
-ALB（Application Load Balancer）を使用し、HTTPS通信を実現しています。
+- VPC（自作）
+- EC2（nginx自動構築）
+- ALB（Application Load Balancer）
+- HTTPS（ACM証明書）
+- Route53（独自ドメイン）
+- DNS自動更新（Terraform管理）
 
+👉 `terraform destroy → apply` で完全復元可能な構成
 ---
 
 ## 🎯 目的
 
 TerraformによるIaCの理解に加え、
 実務で利用されるALB + HTTPS構成を再現することを目的として作成しました。
+![Terraform](https://img.shields.io/badge/Terraform-IaC-blue)
 
 ---
 
@@ -33,8 +40,15 @@ https://net-4.net
 ---
 
 ## 📂 ディレクトリ構成
-- modules/ec2 : EC2インスタンス構築
-- main.tf : 全体のオーケストレーション
+
+├── main.tf
+├── modules/
+│ ├── vpc/
+│ ├── sg/
+│ ├── ec2/
+│ └── alb/
+├── .gitignore
+└── README.md
 
 ---
 
@@ -52,17 +66,33 @@ EC2（nginx）
 
 ## ⚙️ 使用技術
 
-* AWS（EC2 / ALB / ACM / Route53）
-* Terraform
-* nginx
+- Terraform
+- AWS
+  - VPC
+  - EC2
+  - ALB
+  - ACM
+  - Route53
+- nginx
 
 ---
 
-## 🚀 セットアップ方法
+
+## 🚀 セットアップ手順
+
+### ① Terraform初期化
 
 ```bash
 terraform init
+```
+### ② 実行
+```
 terraform apply
+```
+
+### ③ 削除
+```
+terraform destroy
 ```
 
 ---
@@ -71,15 +101,24 @@ terraform apply
 
 * EC2はALB経由のみアクセス可能
 * HTTPS通信（ACM証明書）
-* セキュリティグループによる通信制御
+* セキュリティグループで通信制御
+* SSHは制限可能（IP指定）
 
 ---
 
 ## 💡 工夫した点
 
-* ALB経由でのみアクセス可能な構成
-* HTTP → HTTPSリダイレクト実装
-* Terraformによる再現可能なインフラ構築
+* Terraformのモジュール化（再利用性向上）
+* ALB + HTTPS構成の自動化
+* Route53をTerraformで管理しDNS自動更新を実現
+* user_dataでnginxを自動構築
+
+---
+
+## ⚠️ 注意点
+
+* ALBは再作成時にDNSが変わるため、Route53もTerraform管理必須
+* 初回のみACMのDNS検証が必要
 
 ---
 
