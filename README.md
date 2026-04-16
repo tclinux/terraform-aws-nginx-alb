@@ -64,18 +64,21 @@ https://net-4.net
 
 ```mermaid
 flowchart TD
-    User[User Browser]
-    Route53[Route53 net-4.net]
+    User[User]
+    DNS[Route53 net-4.net]
     ALB[ALB HTTPS 443]
+    HTTP[HTTP 80 Redirect]
     TG[Target Group]
     EC2[EC2 nginx]
 
-    User --> Route53
-    Route53 --> ALB
-    ALB --> TG
+    User --> DNS
+    DNS --> ALB
+    ALB -->|443| TG
+    ALB -->|80| HTTP
+    HTTP -->|Redirect| ALB
     TG --> EC2
+```
 
-    
 ---
 
 ## ⚙️ 使用技術
