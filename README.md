@@ -64,18 +64,24 @@ https://net-4.net
 
 ```mermaid
 flowchart TD
-    User[User]
+    User[🌐 User]
     DNS[Route53 net-4.net]
     ALB[ALB HTTPS 443]
-    HTTP[HTTP 80 Redirect]
     TG[Target Group]
     EC2[EC2 nginx]
 
+    subgraph AWS
+        subgraph VPC
+            subgraph Public Subnet
+                ALB
+                EC2
+            end
+        end
+    end
+
     User --> DNS
     DNS --> ALB
-    ALB -->|443| TG
-    ALB -->|80| HTTP
-    HTTP -->|Redirect| ALB
+    ALB --> TG
     TG --> EC2
 ```
 
