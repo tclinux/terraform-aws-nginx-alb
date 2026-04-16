@@ -64,18 +64,18 @@ https://net-4.net
 
 ```mermaid
 flowchart TD
-    User[User (Browser)]
-    Route53[Route53 (net-4.net)]
-    ALB[ALB (HTTPS 443)]
+    User[User Browser]
+    Route53[Route53 net-4.net]
+    ALB[ALB HTTPS 443]
     TG[Target Group]
-    EC2[EC2 (nginx)]
-    VPC[VPC]
+    EC2[EC2 nginx]
 
     User --> Route53
     Route53 --> ALB
     ALB --> TG
     TG --> EC2
-    EC2 --> VPC
+
+    
 ---
 
 ## ⚙️ 使用技術
