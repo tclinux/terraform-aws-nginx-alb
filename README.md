@@ -41,14 +41,14 @@ https://net-4.net
 
 ## 📂 ディレクトリ構成
 
-├── main.tf
-├── modules/
-│ ├── vpc/
-│ ├── sg/
-│ ├── ec2/
-│ └── alb/
-├── .gitignore
-└── README.md
+├── main.tf<br>
+├── modules/<br>
+│ ├── vpc/<br>
+│ ├── sg/<br>
+│ ├── ec2/<br>
+│ └── alb/<br>
+├── .gitignore<br>
+└── README.md<br>
 
 ---
 
