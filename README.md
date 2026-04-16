@@ -60,16 +60,22 @@ https://net-4.net
 
 ---
 
-## 🌐 アーキテクチャ
+## 🏗 Architecture
 
-Client<br>
-↓<br>
-Route53（DNS）<br>
-↓<br>
-ALB（HTTPS 443）<br>
-↓<br>
-EC2（nginx）
+```mermaid
+flowchart TD
+    User[User (Browser)]
+    Route53[Route53 (net-4.net)]
+    ALB[ALB (HTTPS 443)]
+    TG[Target Group]
+    EC2[EC2 (nginx)]
+    VPC[VPC]
 
+    User --> Route53
+    Route53 --> ALB
+    ALB --> TG
+    TG --> EC2
+    EC2 --> VPC
 ---
 
 ## ⚙️ 使用技術
