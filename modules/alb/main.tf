@@ -1,11 +1,3 @@
-variable "vpc_id" {}
-variable "subnets" {
-  type = list(string)
-}
-variable "alb_sg_id" {}
-variable "target_instance_id" {}
-variable "certificate_arn" {}
-
 # ALB: 入口
 # ALBというリソースを作る宣言
 resource "aws_lb" "alb" {
@@ -35,16 +27,6 @@ resource "aws_lb_target_group" "tg" {
   health_check {
     path = "/"
   }
-}
-
-# EC2をターゲット登録
-resource "aws_lb_target_group_attachment" "tg_attach" {
-  # どのグループに？
-  target_group_arn = aws_lb_target_group.tg.arn
-  # どのEC2？
-  target_id        = var.target_instance_id
-  # 接続ポート
-  port             = 80
 }
 
 # HTTP(80) → HTTPS(443) リダイレクト

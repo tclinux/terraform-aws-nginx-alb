@@ -2,6 +2,16 @@ provider "aws" {
   region = "ap-northeast-1"
 }
 
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+}
+
 ############################################
 # VPC
 ############################################
@@ -24,11 +34,12 @@ module "sg" {
 module "ec2" {
   source = "./modules/ec2"
 
-  ami           = "ami-0c3fd0f5d33134a76"
-  instance_type = "t3.micro"
-
-  subnet_id = module.vpc.public_subnets[0]
-  sg_ids    = [module.sg.web_sg_id]
+  ami              = data.aws_ami.amazon_linux.id
+  web_sg_id        = module.sg.web_sg_id
+  subnets          = module.vpc.public_subnets
+  target_group_arn = module.alb.target_group_arn
+  key_name = "test-instance-key-pair"
+  subnet_ids = module.vpc.public_subnets
 }
 
 ############################################
@@ -40,7 +51,6 @@ module "alb" {
   vpc_id             = module.vpc.vpc_id
   subnets            = module.vpc.public_subnets
   alb_sg_id          = module.sg.alb_sg_id
-  target_instance_id = module.ec2.instance_id
 
   certificate_arn = "arn:aws:acm:ap-northeast-1:881424867137:certificate/c34a1690-a90d-4f45-8b6c-96825937c55a"
 }

@@ -1,6 +1,11 @@
 variable "ami" {}
-variable "instance_type" {}
-variable "subnet_id" {}
-variable "sg_ids" {
+variable "web_sg_id" {}
+variable "subnets" {
   type = list(string)
+}
+variable "target_group_arn" {}
+variable "key_name" {}
+variable "subnet_ids" {
+  description = "List of subnet IDs"
+  type        = list(string)
 }
