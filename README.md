@@ -68,6 +68,18 @@ graph TD
 
 ---
 
+## 🚀 セットアップ手順
+
+```bash
+git clone https://github.com/tclinux/terraform-aws-nginx-alb
+cd terraform-aws-nginx-alb
+
+terraform init
+terraform apply
+```
+
+---
+
 ## 🔄 Auto Scaling動作
 
 ### スケールアウト
