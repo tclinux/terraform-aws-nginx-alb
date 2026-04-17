@@ -1,165 +1,119 @@
-
-# Terraform AWS Nginx + ALB + HTTPS
+# 🌐 Terraform AWS Nginx + ALB + Auto Scaling
 
 ## 📌 概要
-Terraformを用いてAWS上に以下の構成を構築するプロジェクトです。
 
-- VPC（自作）
-- EC2（nginx自動構築）
-- ALB（Application Load Balancer）
-- HTTPS（ACM証明書）
-- Route53（独自ドメイン）
-- DNS自動更新（Terraform管理）
+Terraformを用いて、AWS上にスケーラブルなWebインフラを構築しました。
 
-👉 `terraform destroy → apply` で完全復元可能な構成
----
+本構成では、ALB（Application Load Balancer）とAuto Scalingを組み合わせることで、
+トラフィックに応じてEC2インスタンスが自動で増減する仕組みを実現しています。
 
-## 🎯 目的 ![Terraform](https://img.shields.io/badge/Terraform-IaC-blue) ![AWS](https://img.shields.io/badge/AWS-Cloud-orange)
-TerraformによるIaCの実践に加え、
-実務で使用されるALB + HTTPS + DNS自動化構成を再現することを目的としています。
-
+AWSの各サービスがどのように連携するかを実践的に理解できているのが良かったと思います。
 
 ---
 
-## 🌍 デモ
-
-https://net-4.net
-(普段はAWSの課金を防ぐために起動していません)
-![image](./images/screenshot_net-4.net.png)
-
----
-
-## 🏗 構成
-
-* EC2 (nginx)
-* ALB (Application Load Balancer)
-* ACM (SSL証明書)
-* Route53 (独自ドメイン)
-
----
-
-## 📂 ディレクトリ構成
-
-├── main.tf<br>
-├── modules/<br>
-│     ├── vpc/<br>
-│     ├── sg/<br>
-│     ├── ec2/<br>
-│     └── alb/<br>
-├── .gitignore<br>
-└── README.md<br>
-
----
-
-## 🔧 Terraform設計
-
-- modules/vpc : ネットワーク構築
-- modules/sg : セキュリティ制御
-- modules/ec2 : nginxサーバー
-- modules/alb : HTTPS + ロードバランサー
-
----
-
-## 🏗 Architecture
+## 🏗 構成図
 
 ```mermaid
-flowchart TD
-    User[🌐 User]
-    DNS[Route53 net-4.net]
-    ALB[ALB HTTPS 443]
-    TG[Target Group]
-    EC2[EC2 nginx]
-
-    subgraph AWS
-        subgraph VPC
-            subgraph Public Subnet
-                ALB
-                EC2
-            end
-        end
-    end
-
-    User --> DNS
-    DNS --> ALB
-    ALB --> TG
-    TG --> EC2
+graph TD
+    User --> Route53
+    Route53 --> ALB
+    ALB --> TargetGroup
+    TargetGroup --> EC2_1
+    TargetGroup --> EC2_2
 ```
 
 ---
 
 ## ⚙️ 使用技術
 
-- Terraform
-- AWS
-  - VPC
-  - EC2
-  - ALB
-  - ACM
-  - Route53
-- nginx
+* Terraform
+* AWS
+
+  * VPC
+  * EC2
+  * ALB
+  * Auto Scaling
+  * Route53
+  * ACM
+  * CloudWatch
+* Nginx
 
 ---
 
-## 📤 Outputs
+## 🚀 機能
 
-- ALB DNS
-- EC2 Instance ID
+* HTTPS対応（ACM証明書）
+* ALBによる負荷分散
+* Auto Scalingによる自動スケール
+* CloudWatchによるCPU監視
+* Route53による独自ドメイン運用
 
 ---
 
+## 🔄 Auto Scaling動作
 
-## 🚀 セットアップ手順
+### スケールアウト
 
-### ① Terraform初期化
+* CPU使用率 > 40%
+* EC2インスタンスが自動で増加
 
-```bash
-terraform init
+### スケールイン
+
+* CPU使用率 < 20%
+* EC2インスタンスが自動で削減
+
+---
+
+## 💡 工夫したポイント
+
+* ALB経由のみアクセス可能なセキュリティ設計
+* SSHアクセスを特定IPに制限
+* モジュール化によるTerraformの再利用性向上
+* HTTPS化によるセキュアな通信
+
+---
+
+## ⚠️ 苦労した点
+
+* ALBとターゲットグループの連携
+* CloudWatchアラームの閾値調整
+* Auto Scalingが発火しない問題の切り分け
+* セキュリティグループとSSH接続のトラブル
+
+---
+
+## 📈 今後の改善
+
+* SSMを用いたSSHレス構成
+* RDSを追加した3層アーキテクチャ
+* ECSによるコンテナ化
+* CI/CDパイプラインの構築
+
+---
+
+## 🧪 動作確認
+
+* `https://net-4.net` にアクセスするとNginxが表示される
+* 負荷をかけるとEC2インスタンスが増加
+* 負荷を止めるとインスタンスが削減
+
+---
+
+## 📂 ディレクトリ構成
+
 ```
-### ② 実行
+.
+├── main.tf
+├── backend.tf
+├── modules/
+│   ├── vpc/
+│   ├── ec2/
+│   ├── alb/
+│   └── sg/
 ```
-terraform apply
-```
-
-### ③ 削除
-```
-terraform destroy
-```
 
 ---
 
-## 🔐 セキュリティ
-
-* EC2はALB経由のみアクセス可能
-* HTTPS通信（ACM証明書）
-* セキュリティグループで通信制御
-* SSHは制限可能（IP指定）
-
----
-
-## 💡 工夫した点
-
-* Terraformのモジュール化（再利用性向上）
-* ALB + HTTPS構成の自動化
-* Route53をTerraformで管理しDNS自動更新を実現
-* user_dataでnginxを自動構築
-
----
-
-## ⚠️ 注意点
-
-* ALBは再作成時にDNSが変わるため、Route53もTerraform管理必須
-* 初回のみACMのDNS検証が必要
-
----
-
-## 📚 学んだこと
-
-* Terraformによるインフラ自動化（IaC）
-* ALB + HTTPS構成
-* AWSネットワーク設計（VPC / サブネット / SG）
-* GitHubでの安全なコード管理
-
----
 
 ## 👤 作成者
 
