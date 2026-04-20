@@ -11,6 +11,13 @@ data "aws_ami" "amazon_linux" {
     values = ["amzn2-ami-hvm-*-x86_64-gp2"]
   }
 }
+############################################
+# IAM
+############################################
+
+module "iam" {
+  source = "./modules/iam"
+}
 
 ############################################
 # VPC
@@ -40,6 +47,7 @@ module "ec2" {
   target_group_arn = module.alb.target_group_arn
   key_name = "test-instance-key-pair"
   subnet_ids = module.vpc.public_subnets
+  instance_profile_name = module.iam.instance_profile_name
 }
 
 ############################################

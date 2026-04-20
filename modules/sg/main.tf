@@ -42,12 +42,14 @@ resource "aws_security_group" "web_sg" {
   }
 
   # SSH
+  /*
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["175.41.114.206/32"]
   }
+  */
 
   egress {
     from_port = 0

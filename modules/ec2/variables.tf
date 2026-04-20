@@ -9,3 +9,6 @@ variable "subnet_ids" {
   description = "List of subnet IDs"
   type        = list(string)
 }
+variable "instance_profile_name" {
+  type = string
+}

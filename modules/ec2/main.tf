@@ -4,6 +4,10 @@ resource "aws_launch_template" "web" {
   instance_type = "t3.micro"
   vpc_security_group_ids = [var.web_sg_id]
   key_name = var.key_name
+  iam_instance_profile {
+    name = var.instance_profile_name
+  }
+
 
   user_data = base64encode(<<-EOF
     #!/bin/bash
