@@ -21,7 +21,7 @@ AWSの各サービスがどのように連携するかを実践的に理解で�
 
 ## 🌍 Live Demo
 
-👉 https://net-4.net
+👉 https://net-4.net (Amazon課金防止のため、普段は起動していません)
 
 ---
 

@@ -83,3 +83,15 @@ resource "aws_route53_record" "alb_record" {
     evaluate_target_health = true
   }
 }
+
+############################################
+# RDS
+############################################
+
+module "rds" {
+  source = "./modules/rds"
+
+  vpc_id             = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnet_ids
+  ec2_sg_id          = module.ec2.ec2_sg_id
+}
