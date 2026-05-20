@@ -1,3 +1,8 @@
+
+############################################
+# DB Subnet Group
+############################################
+
 resource "aws_db_subnet_group" "main" {
   name       = "rds-subnet-group"
   subnet_ids = var.private_subnet_ids
@@ -6,6 +11,10 @@ resource "aws_db_subnet_group" "main" {
     Name = "rds-subnet-group"
   }
 }
+
+############################################
+# Security Group（RDS）
+############################################
 
 resource "aws_security_group" "rds_sg" {
   name   = "rds-sg"
@@ -25,6 +34,11 @@ resource "aws_security_group" "rds_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+
+############################################
+# RDS本体（MySQL例）
+############################################
 
 resource "aws_db_instance" "main" {
   identifier = "my-db"

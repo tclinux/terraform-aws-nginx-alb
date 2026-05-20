@@ -8,3 +8,15 @@ output "public_subnets" {
     aws_subnet.public_2.id
   ]
 }
+
+############################################
+# RDS 向け
+############################################
+
+output "private_subnet_ids" {
+  value = aws_subnet.private[*].id
+}
+
+output "vpc_id" {
+  value = aws_vpc.main.id
+}
