@@ -12,6 +12,8 @@ TerraformによるAWSインフラストラクチャ
 * スケーラビリティ
 * トラブルシューティング
 
+---
+
 ## 🧾 Summary
 
 TerraformでAWSにスケーラブルなWebインフラ（ALB + Auto Scaling + Nginx）に関して、負荷に応じてEC2が自動増減する環境を構築するだけでなく、ALBヘルスチェックやIAM権限、Security Groupなど実際に発生した問題を切り分け・改善しながら完成させました。 
@@ -41,8 +43,9 @@ AWSサービス間の依存関係や障害発生時の原因切り分けまで�
 
 ```mermaid
 graph TD
-    User --> Route53
-    Route53 --> ALB
+    Internet--> Route53
+    Route53 --> ACM
+    ACM --> ALB
     ALB --> TargetGroup
     TargetGroup --> ASG
     ASG --> EC2_1
@@ -53,17 +56,14 @@ graph TD
 
 ## ⚙️ 使用技術
 
-* Terraform
-* AWS
-
-  * VPC
-  * EC2
-  * ALB
-  * Auto Scaling
-  * Route53
-  * ACM
-  * CloudWatch
-* Nginx
+| Technology | Purpose |
+| --- | --- |
+| Terraform | IaC |
+| ALB | Load Balancing |
+| Auto Scaling | High Availability |
+| CloudWatch | Monitoring |
+| ACM | HTTPS |
+| SSM | Secure Operation |
 
 ---
 
@@ -84,7 +84,7 @@ graph TD
 - セキュリティ強化のため、EC2への直接アクセスを制限
 - HTTPS化により通信の暗号化を実現
 - Auto Scalingにより、トラフィック変動に対する耐障害性とコスト最適化を両立
-- ALBを用いることで単一障害点を排除し、高可用性を確保
+- Terraform Moduleを採用し、保守性・再利用性を向上
 
 ---
 
