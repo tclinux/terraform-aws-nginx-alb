@@ -1,9 +1,21 @@
 # 🌐 Terraform AWS Nginx + ALB + Auto Scaling
 
+TerraformによるAWSインフラストラクチャ
+
+本プロジェクトは、Terraformを使用して本番環境に近いAWSインフラストラクチャを構築・シミュレーションするために作成されました。
+
+単にAWSリソースをプロビジョニングするだけでなく、実践的なAWS環境を通じて以下の要素に重点を置いています。
+
+* Infrastructure as Code（IaC）
+* 高可用性
+* セキュリティ
+* スケーラビリティ
+* トラブルシューティング
+
 ## 🧾 Summary
 
-TerraformでAWSにスケーラブルなWebインフラ（ALB + Auto Scaling + Nginx）を構築し、  
-負荷に応じてEC2が自動増減する環境を実装しました。
+TerraformでAWSにスケーラブルなWebインフラ（ALB + Auto Scaling + Nginx）に関して、負荷に応じてEC2が自動増減する環境を構築するだけでなく、ALBヘルスチェックやIAM権限、Security Groupなど実際に発生した問題を切り分け・改善しながら完成させました。 
+。
 
 ---
 
@@ -14,7 +26,7 @@ Terraformを用いて、AWS上にスケーラブルなWebインフラを構築�
 本構成では、ALB（Application Load Balancer）とAuto Scalingを組み合わせることで、
 トラフィックに応じてEC2インスタンスが自動で増減する仕組みを実現しています。
 
-AWSの各サービスがどのように連携するかを実践的に理解できているのが良かったと思います。
+AWSサービス間の依存関係や障害発生時の原因切り分けまで含めて実践的に検証しました。
 
 
 ---
