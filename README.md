@@ -43,10 +43,24 @@ AWSサービス間の依存関係や障害発生時の原因切り分けまで�
 
 ![image](./images/AWS_portforio_04.drawio.png)
 
+## 
+
 インフラストラクチャは全面的にTerraformでプロビジョニングされています。
 アプリケーションのトラフィックはRoute 53を経由してルーティングされ、ACMで保護された上でApplication Load Balancerによって分散され、Auto Scalingグループで管理されるEC2インスタンスによって処理されます。
 CloudWatchがCPU使用率を監視し、Auto Scalingポリシーをトリガーします。
 管理アクセスはSSHではなく、AWS Systems Manager経由で行われます。
+
+---
+
+## 🧠 設計意図
+
+- 可用性向上のため、ALB + Auto Scaling構成を採用
+- 単一障害点を排除するため、複数AZ構成を採用
+- セキュリティ強化のため、EC2への直接アクセスを制限
+- HTTPS化により通信の暗号化を実現
+- Auto Scalingにより、トラフィック変動に対する耐障害性とコスト最適化を両立
+- Terraform Moduleを採用し、保守性・再利用性を向上
+
 ---
 
 ## ⚙️ 使用技術
@@ -70,16 +84,6 @@ CloudWatchがCPU使用率を監視し、Auto Scalingポリシーをトリガー�
 * CloudWatchによるCPU監視
 * Route53による独自ドメイン運用
 
----
-
-## 🧠 設計意図
-
-- 可用性向上のため、ALB + Auto Scaling構成を採用
-- 単一障害点を排除するため、複数AZ構成を採用
-- セキュリティ強化のため、EC2への直接アクセスを制限
-- HTTPS化により通信の暗号化を実現
-- Auto Scalingにより、トラフィック変動に対する耐障害性とコスト最適化を両立
-- Terraform Moduleを採用し、保守性・再利用性を向上
 
 ---
 
