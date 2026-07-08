@@ -41,7 +41,11 @@ AWSサービス間の依存関係や障害発生時の原因切り分けまで�
 
 ## 🏗 構成図
 
-![image](./images/AWS_portforio_03.drawio.png)
+![image](./images/AWS_portforio_04.drawio.png)
+インフラストラクチャは全面的にTerraformでプロビジョニングされています。
+アプリケーションのトラフィックはRoute 53を経由してルーティングされ、ACMで保護された上でApplication Load Balancerによって分散され、Auto Scalingグループで管理されるEC2インスタンスによって処理されます。
+CloudWatchがCPU使用率を監視し、Auto Scalingポリシーをトリガーします。
+管理アクセスはSSHではなく、AWS Systems Manager経由で行われます。
 ---
 
 ## ⚙️ 使用技術
