@@ -41,17 +41,7 @@ AWSサービス間の依存関係や障害発生時の原因切り分けまで�
 
 ## 🏗 構成図
 
-```mermaid
-graph TD
-    Internet--> Route53
-    Route53 --> ACM
-    ACM --> ALB
-    ALB --> TargetGroup
-    TargetGroup --> ASG
-    ASG --> EC2_1
-    ASG --> EC2_2
-```
-
+![image](./images/AWS_portforio_03.drawio.png)
 ---
 
 ## ⚙️ 使用技術
