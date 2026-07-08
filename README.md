@@ -150,25 +150,62 @@ SSHを使用せず、AWS Systems Manager Session Managerを利用してEC2に接
 
 ## ⚠️ 苦労した点
 
-* ALBとターゲットグループの連携
-* CloudWatchアラームの閾値調整
-* Auto Scalingが発火しない問題の切り分け
-* セキュリティグループとSSH接続のトラブル
+### ALB Health Check
+
+Problem
+Target GroupがUnhealthyになった。
+
+Cause
+Security GroupとNginx設定に問題があった。
+
+Solution
+通信経路を確認しながら設定を修正し、
+Health Checkを正常化した。
+
+
+### Auto Scaling
+
+Problem
+CPU負荷をかけてもスケールアウトしない。
+
+Cause
+CloudWatch Alarmの設定。
+
+Solution
+閾値とEvaluation Periodを見直した。
+
 
 ---
 
 ## 🧠 学び
 
-AWS各サービス（ALB / Auto Scaling / CloudWatch）がどのように連携してスケーラブルな構成を実現するかを理解できた。
+* TerraformはAWSサービス同士の依存関係を理解して設計することが重要
+* CloudWatchは監視だけではなくAuto Scalingとの連携で真価を発揮する
+* SSMを採用することでSSH不要の安全な運用が実現できる
+* 問題発生時にはログや設定を確認し、原因を切り分けることの重要性を学んだ
 
 ---
 
 ## 📈 今後の改善
 
 * SSMを用いたSSHレス構成
-* RDSを追加した3層アーキテクチャ
 * ECSによるコンテナ化
+* RDSを追加した3層アーキテクチャ
 * CI/CDパイプラインの構築
+
+---
+
+
+## Lessons for Engineers
+
+今回一番学んだことは、
+Terraformを書けることではなく、
+AWSサービス同士の依存関係を理解し、
+問題発生時に原因を切り分ける重要性でした。
+
+今後はDockerやECS、
+CI/CDにも取り組み、
+より実践的なクラウドインフラを構築していきたいと考えています。
 
 ---
 
