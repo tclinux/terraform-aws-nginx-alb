@@ -41,7 +41,7 @@ AWSサービス間の依存関係や障害発生時の原因切り分けまで�
 
 ## 🏗 構成図
 
-![image](./images/AWS_portforio_04.drawio.png)
+![image](./images/AWS_portforio_08.drawio.png)
 
 ## 
 
